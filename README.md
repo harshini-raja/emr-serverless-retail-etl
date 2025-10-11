@@ -11,6 +11,7 @@ flowchart LR
   B --> C[S3 Curated Parquet Partitions]
   C --> D[Snowflake External Stage]
   D --> E[Snowflake Tables via COPY INTO]
+  E --> G[Amazon QuickSight Dashboards]
   subgraph Orchestration
   F[Airflow on EC2]
   end
