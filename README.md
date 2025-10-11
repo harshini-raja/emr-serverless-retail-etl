@@ -7,12 +7,12 @@
 ## Architecture (Mermaid)
 ```mermaid
 flowchart LR
-  A[Instacart dataset (S3 raw)] --> B[EMR Serverless Spark job]
-  B --> C[S3 curated Parquet + partitions]
+  A[Instacart S3 Raw Data] --> B[EMR Serverless Spark Job]
+  B --> C[S3 Curated Parquet Partitions]
   C --> D[Snowflake External Stage]
-  D --> E[COPY INTO Snowflake tables]
+  D --> E[Snowflake Tables via COPY INTO]
   subgraph Orchestration
   F[Airflow on EC2]
   end
-  F -. Schedules/Triggers .-> B
-  F -. COPY tasks .-> E
+  F -. schedules and triggers .-> B
+  F -. copy tasks .-> E
