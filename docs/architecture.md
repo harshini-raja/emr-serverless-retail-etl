@@ -1,17 +1,19 @@
-# Architecture
+## Architecture
 
-## Diagram
+### Diagram
 ```mermaid
 flowchart TB
-subgraph Ingest
-RAW[S3 raw: instacart/raw/...]
-end
-EMR[EMR Serverless (Spark 7.x)]
-CURATED[S3 curated: partitioned Parquet]
-STAGE[(Snowflake External Stage)]
-TBL[(Snowflake Tables)]
-AF[Airflow on EC2]
+  subgraph Ingest
+    RAW[S3 Raw Data - Instacart Files]
+  end
 
-RAW --> EMR --> CURATED --> STAGE --> TBL
-AF -. Schedules/Monitors .-> EMR
-AF -. COPY tasks .-> TBL
+  EMR[EMR Serverless Spark Job]
+  CURATED[S3 Curated Parquet Data]
+  STAGE[Snowflake External Stage]
+  TBL[Snowflake Tables]
+  DASH[Amazon QuickSight Dashboards]
+  AF[Airflow on EC2]
+
+  RAW --> EMR --> CURATED --> STAGE --> TBL --> DASH
+  AF -. schedules and monitors .-> EMR
+  AF -. copy tasks .-> TBL
