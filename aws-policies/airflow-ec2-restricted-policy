@@ -1,29 +1,61 @@
 {
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "AllowS3AccessForEMR",
-      "Effect": "Allow",
-      "Action": [
-        "s3:GetObject",
-        "s3:ListBucket"
-      ],
-      "Resource": [
-        "arn:aws:s3:::<raw-bucket-name>",
-        "arn:aws:s3:::<raw-bucket-name>/*",
-        "arn:aws:s3:::<curated-bucket-name>",
-        "arn:aws:s3:::<curated-bucket-name>/*"
-      ]
-    },
-    {
-      "Sid": "AllowCloudWatchLogging",
-      "Effect": "Allow",
-      "Action": [
-        "logs:CreateLogGroup",
-        "logs:CreateLogStream",
-        "logs:PutLogEvents"
-      ],
-      "Resource": "*"
-    }
-  ]
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Effect": "Allow",
+			"Action": [
+				"s3:ListBucket",
+				"s3:GetBucketLocation"
+			],
+			"Resource": [
+				"arn:aws:s3:::instacart-raw-harshini-20251002",
+				"arn:aws:s3:::instacart-curated-harshini-20251002"
+			]
+		},
+		{
+			"Effect": "Allow",
+			"Action": [
+				"s3:GetObject",
+				"s3:PutObject",
+				"s3:DeleteObject"
+			],
+			"Resource": [
+				"arn:aws:s3:::instacart-raw-harshini-20251002/*",
+				"arn:aws:s3:::instacart-curated-harshini-20251002/*"
+			]
+		},
+		{
+			"Effect": "Allow",
+			"Action": [
+				"logs:CreateLogGroup",
+				"logs:CreateLogStream",
+				"logs:PutLogEvents"
+			],
+			"Resource": "*"
+		},
+		{
+			"Effect": "Allow",
+			"Action": [
+				"emr-serverless:StartApplication",
+				"emr-serverless:StopApplication",
+				"emr-serverless:GetApplication",
+				"emr-serverless:ListApplications",
+				"emr-serverless:StartJobRun",
+				"emr-serverless:GetJobRun",
+				"emr-serverless:ListJobRuns",
+				"emr-serverless:CancelJobRun"
+			],
+			"Resource": "*"
+		},
+		{
+			"Effect": "Allow",
+			"Action": "iam:PassRole",
+			"Resource": "arn:aws:iam::058264291892:role/emrserverless-instacart-role",
+			"Condition": {
+				"StringEquals": {
+					"iam:PassedToService": "emr-serverless.amazonaws.com"
+				}
+			}
+		}
+	]
 }
