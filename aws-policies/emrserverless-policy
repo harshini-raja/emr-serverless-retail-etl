@@ -2,69 +2,31 @@
 	"Version": "2012-10-17",
 	"Statement": [
 		{
-			"Sid": "EC2PolicyStatement",
+			"Sid": "AllowEMRServerlessJobOps",
 			"Effect": "Allow",
 			"Action": [
-				"ec2:CreateNetworkInterface",
-				"ec2:DeleteNetworkInterface",
-				"ec2:DescribeNetworkInterfaces",
-				"ec2:DescribeSecurityGroups",
-				"ec2:DescribeSubnets",
-				"ec2:DescribeVpcs",
-				"ec2:DescribeDhcpOptions",
-				"ec2:DescribeRouteTables"
-			],
-			"Resource": "*"
-		},
-		{
-			"Sid": "CloudWatchPolicyStatement",
-			"Effect": "Allow",
-			"Action": [
-				"cloudwatch:PutMetricData"
-			],
-			"Resource": "*",
-			"Condition": {
-				"StringEquals": {
-					"cloudwatch:namespace": [
-						"AWS/EMRServerless",
-						"AWS/Usage"
-					]
-				}
-			}
-		},
-		{
-			"Sid": "S3ReadWriteAccess",
-			"Effect": "Allow",
-			"Action": [
-				"s3:GetObject",
-				"s3:ListBucket",
-				"s3:GetBucketLocation"
+				"emr-serverless:StartJobRun",
+				"emr-serverless:CancelJobRun",
+				"emr-serverless:GetJobRun",
+				"emr-serverless:ListJobRuns",
+				"emr-serverless:GetApplication",
+				"emr-serverless:ListApplications"
 			],
 			"Resource": [
-				"arn:aws:s3:::instacart-curated-harshini-20251002",
-				"arn:aws:s3:::instacart-curated-harshini-20251002/*",
-				"arn:aws:s3:::instacart-raw-harshini-20251002",
-				"arn:aws:s3:::instacart-raw-harshini-20251002/*"
+				"arn:aws:emr-serverless:us-east-1:058264291892:/applications/00g058s1p8jgne09",
+				"arn:aws:emr-serverless:us-east-1:058264291892:/applications/00g058s1p8jgne09/jobruns/*"
 			]
 		},
 		{
-			"Sid": "S3WriteLogs",
+			"Sid": "AllowPassEmrRuntimeRole",
 			"Effect": "Allow",
-			"Action": [
-				"s3:PutObject",
-				"s3:AbortMultipartUpload"
-			],
-			"Resource": "arn:aws:s3:::instacart-curated-harshini-20251002/logs/*"
-		},
-		{
-			"Sid": "CWLogsAccess",
-			"Effect": "Allow",
-			"Action": [
-				"logs:CreateLogGroup",
-				"logs:CreateLogStream",
-				"logs:PutLogEvents"
-			],
-			"Resource": "*"
+			"Action": "iam:PassRole",
+			"Resource": "arn:aws:iam::058264291892:role/emrserverless-instacart-role",
+			"Condition": {
+				"StringEquals": {
+					"iam:PassedToService": "emr-serverless.amazonaws.com"
+				}
+			}
 		}
 	]
 }
